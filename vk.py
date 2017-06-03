@@ -5,8 +5,13 @@
 # 'date' - дата сообщения
 
 # формирование заголовка бота
-def headVk(Token):
-    return '''import time, vk_api
+def headVk(Token, Modules):
+    Import = 'import '
+    for X in Modules:
+        M = (X.split(':'))[0]
+        Import += M + ' '
+    return Import + '''
+import time, vk_api, sys
 vk = vk_api.VkApi(token = \'''' + Token + '''\')
 values = {'out': 0, 'count': 100, 'time_offset': 60}'''
 
@@ -16,18 +21,25 @@ def writeVk():
     vk.method('messages.send', {'user_id':user_id, 'message':msg})'''
 
 # формирование условий
-def ifVk(Msg, Response, Item):
+def ifVk(Msg, Response, Item, Modules):
     if Item >= len(Msg):
         return ''
     else:
         Resp = Response[Item]
-        return '''        if item['body'] == "''' + Msg[Item] + '''":
-                print(item['body'], ' >>from<< ', item['user_id'])
+        if ':' in Resp:
+            M = (Resp.split(':'))[0]
+            A = (Resp.split(':'))[1]
+            if M in Modules:
+                return '''        if item['body'] == "''' + Msg[Item] + '''":
+                writeMsg(item['user_id'], getattr(sys.modules["''' + M + '''"], "todo")("''' + A + '''"))
+        ''' + str(ifVk(Msg, Response, Item + 1, Modules))
+        else:
+            return '''        if item['body'] == "''' + Msg[Item] + '''":
                 writeMsg(item['user_id'],\"''' + Resp + '''\")
-    ''' + ifVk(Msg, Response, Item + 1)
+    ''' + str(ifVk(Msg, Response, Item + 1, Modules))
 
 # формирование приема сообщений
-def readVk(Msg, Response):
+def readVk(Msg, Response, Modules):
     readMsg = '''def readMsg():
     while True:
         response = vk.method('messages.get', values)
@@ -36,22 +48,22 @@ def readVk(Msg, Response):
         for item in response['items']:
     '''
 
-    ifVkStr = ifVk(Msg, Response, 0)
+    ifVkStr = ifVk(Msg, Response, 0, Modules)
 
-    readMsg += ifVkStr + '''    time.sleep(1)'''
+    readMsg += ifVkStr + '''time.sleep(1)'''
     return readMsg
 
 def mainVk():
     return '''if __name__ == \"__main__\":
     readMsg()'''
 
-def vkBot(Token, Msg, Resp):
-    Bot = headVk(Token) + "\n"
+def vkBot(Token, Msg, Resp, Modules):
+    Bot = headVk(Token, Modules) + "\n"
     Bot += writeVk() + "\n"
-    Bot += readVk(Msg,Resp) + "\n"
+    Bot += readVk(Msg,Resp,Modules) + "\n"
     Bot += mainVk() + "\n"
     return Bot
 
 if __name__ == "__main__":
     # readMsg()
-    print(vkBot("198ea0ffd479982bf90ff58d16f0d12d08fa470b1835310fe14e035a23bb3d000aed0caa6761006fdd67c", ["Hello", "Bye"], ["Bye", "Ok"]))
+    print(vkBot("198ea0ffd479982bf90ff58d16f0d12d08fa470b1835310fe14e035a23bb3d000aed0caa6761006fdd67c", ["Hello", "Bye", "курс мне"], ["Bye1", "Ok", "kurs:usa"], ["kurs"]))

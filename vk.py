@@ -33,6 +33,8 @@ def ifVk(Msg, Response, Item, Modules):
                 return '''        if item['body'] == "''' + Msg[Item] + '''":
                 writeMsg(item['user_id'], getattr(sys.modules["''' + M + '''"], "todo")("''' + A + '''"))
         ''' + str(ifVk(Msg, Response, Item + 1, Modules))
+            else:
+                return '' + str(ifVk(Msg, Response, Item + 1, Modules)))
         else:
             return '''        if item['body'] == "''' + Msg[Item] + '''":
                 writeMsg(item['user_id'],\"''' + Resp + '''\")

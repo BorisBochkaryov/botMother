@@ -67,7 +67,9 @@ class Ui_Form(object):
         #Form.connect(pushButton,QtCore.SIGNAL('clicked()'),QtCore.SLOT('start()'))
         self.pushButton.clicked.connect(self.start)
         self.code.setText(u'''text(Print):="Hello cat"?"Котики"
-text(Print1):="Hello"?"Солнце"''')
+text(Print1):="Hello"?"Солнце"
+geo(Geo?):=$geo(Сбербанк)?"Геоданные"
+text(курс мне):=$kurs(usa)?"курс USA''')
         self.lineEditT.setText("398702729:AAGEbX17tBg8KBRbykgoeYbbOIX2bYWXMTc")
         self.lineEditVK.setText("198ea0ffd479982bf90ff58d16f0d12d08fa470b1835310fe14e035a23bb3d000aed0caa6761006fdd67c")
 

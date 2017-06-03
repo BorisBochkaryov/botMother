@@ -1,46 +1,62 @@
 # -*- coding: utf-8 -*-
-import sys
+import sys,os
 from tg import *
 from vk import *
 from PyQt5 import QtCore, QtGui
 
 def splitCode(keyVK,keyT,code):
     fT = open('tgBot.py','w')
-    codeT = Tg_tok(keyT) + Tg_mes_text_header()
     sdvigT = 0
+    codeT = ''
+
+    listModul = []
 
     fVK = open('vkBot.py','w')
     #codeVK = headVk(keyVK) + '\n' + writeVk()
     sdvigVK = 0
     msgVK = []
     respVK = []
+    geoVK = []
     helpText = ''
     for line in code.split('\n'):
-        temp = line.split('?')
-        cmdList = temp[0].split(':=')
+        k = str(line).rfind('?')
+        cmdList = line[0:k].split(':=')
         i = str(cmdList[0]).find('(')
         j = str(cmdList[0]).find(')')
         cmd = cmdList[0][0:i]
         textCmd = cmdList[0][i+1:j]
 
-        helpText = helpText + textCmd + '-' + temp[1][1:-1] + '''
+        helpText +=  textCmd + '-' + line[k+1:-1] + '''
 '''
         rezT = ''
         if cmd == 'text':
-            if cmdList[1][0] != '{':
+            if cmdList[1][0] != '$':
                 rezT = Tg_mes_text_if([textCmd],[cmdList[1][1:-1]],sdvigT+2)
-                #rezVK = vkBot(keyVK, )
                 msgVK.append(textCmd)
                 respVK.append(cmdList[1][1:-1])
             else:
-                #for tmp in cmdList[1].split('\n'):
-                #    listRes.append(tmp)
-                rezT = Tg_mes_text_if([textCmd],[cmdList[1][1:-1]],sdvigT+2)
+                i = str(cmdList[0]).find('(')
+                cmdName = cmdList[1][1:i+1]
+                cmdText = cmdList[1][i+2:-1]
+                if cmdName == 'kurs':
+                    listModul.append('kurs')
+                    msgVK.append(textCmd)
+                    #rezT = 'kurs:' + cmdText
+                    respVK.append('kurs:' + cmdText)
 
-        for code_line in rezT.split('\n'):
-            codeT = codeT + sdvigT*' ' + code_line + '\n'
+        elif cmd == 'geo':
+            #listModul.append('geo')
+            if cmdList[1][0] == '$':
+                i = str(cmdList[0]).find('(')
+                cmdName = cmdList[1][1:i+1]
+                cmdText = cmdList[1][i+2:-1]
+                #if cmdName == 'geo':
+                    #rezT = '1234\n'
+        if len(rezT) > 0:
+            for code_line in rezT.split('\n'):
+                codeT = codeT + sdvigT*' ' + code_line + '\n'
 
-    codeT = codeT + Tg_mes_text_if(['help'],[str(helpText)],sdvigT+2)
+    codeT = Tg_tok(keyT,listModul) + Tg_mes_text_header() + codeT + Tg_mes_text_if(['help'],[str(helpText)],sdvigT+2)
     codeT = codeT + Tg_main()
     fT.write(codeT)
     fT.close()
@@ -50,12 +66,12 @@ def splitCode(keyVK,keyT,code):
     #codeVK = codeVK + '\n' + mainVk()
     msgVK.append('help')
     respVK.append(helpText)
-    fVK.write(vkBot(keyVK,msgVK,respVK))
+    fVK.write(vkBot(keyVK,msgVK,respVK,listModul))
     fVK.close()
 
     # print(open('vkBot.py').read())
 
-    os.system("kill -9 `ps -ax | grep \"thon vkBot.py\" | awk '{print $1}'`")
-    os.system("kill -9 `ps -ax | grep \"thon tgBot.py\" | awk '{print $1}'`")
+    os.system("kill -9 `ps -ax | grep vkBot.py | awk '{print $1}'`")
+    os.system("kill -9 `ps -ax | grep tgBot.py | awk '{print $1}'`")
     os.system("python3 vkBot.py&")
     os.system("python3 tgBot.py&")

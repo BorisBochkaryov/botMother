@@ -32,10 +32,12 @@ def ifVk(Msg, Response, Item, Modules):
             if M in Modules:
                 return '''        if item['body'] == "''' + Msg[Item] + '''":
                 writeMsg(item['user_id'], getattr(sys.modules["''' + M + '''"], "todo")("''' + A + '''"))
-        ''' + str(ifVk(Msg, Response, Item + 1, Modules))
+    ''' + str(ifVk(Msg, Response, Item + 1, Modules))
+            else:
+                return '' + str(ifVk(Msg, Response, Item + 1, Modules))
         else:
             return '''        if item['body'] == "''' + Msg[Item] + '''":
-                writeMsg(item['user_id'],\"''' + Resp + '''\")
+                writeMsg(item['user_id'],\'\'\'''' + Resp + '''\'\'\')
     ''' + str(ifVk(Msg, Response, Item + 1, Modules))
 
 # формирование приема сообщений

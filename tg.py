@@ -8,8 +8,11 @@ from telebot import *
 # def comands(message):
 #     bot.send_message(message.chat.id, message.text + ", ты пидор")
 
-def Tg_tok(token):
-    return '''from telebot import *
+def Tg_tok(token,listModul):
+    tmp = ''
+    for i in listModul:
+        tmp += 'import '+ i + '\n'
+    return tmp + '''\nfrom telebot import *
 bot = TeleBot(\'''' + str(token) + '''\')\n
 '''
 def Tg_main():

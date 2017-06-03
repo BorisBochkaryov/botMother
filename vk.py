@@ -21,12 +21,12 @@ def ifVk(Msg, Response, Item):
         return '\n'
     else:
         if type(Response[Item]) == str:
-            Resp = "\"" + Response[Item] + "\""
+            Resp = "\'\'\'" + Response[Item] + "\'\'\'"
         else:
             Resp = Response[Item]
         return '''    if item['body'] == "''' + Msg[Item] + '''":
             print(item['body'], ' >>from<< ', item['user_id'])
-            writeMsg(item['user_id'],\"''' + Resp + '''\")
+            writeMsg(item['user_id'],''' + Resp + ''')
     ''' + ifVk(Msg, Response, Item + 1)
 
 # формирование приема сообщений

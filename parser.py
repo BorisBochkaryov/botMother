@@ -2,6 +2,7 @@
 import sys
 from tg import *
 from vk import *
+from PyQt5 import QtCore, QtGui
 
 def splitCode(keyVK,keyT,code):
     fT = open('tgBot.py','w')
@@ -13,13 +14,18 @@ def splitCode(keyVK,keyT,code):
     sdvigVK = 0
     msgVK = []
     respVK = []
+    helpText = ''
     for line in code.split('\n'):
-        cmdList = line.split(':=')
+        temp = line.split('?')
+        cmdList = temp[0].split(':=')
         i = str(cmdList[0]).find('(')
         j = str(cmdList[0]).find(')')
         cmd = cmdList[0][0:i]
         textCmd = cmdList[0][i+1:j]
-        listRes = []
+
+        helpText = helpText + textCmd + '-' + temp[1][1:-1] + '''
+'''
+        rezT = ''
         if cmd == 'text':
             if cmdList[1][0] != '{':
                 rezT = Tg_mes_text_if([textCmd],[cmdList[1][1:-1]],sdvigT+2)
@@ -29,11 +35,12 @@ def splitCode(keyVK,keyT,code):
             else:
                 #for tmp in cmdList[1].split('\n'):
                 #    listRes.append(tmp)
-                rezT = Tg_mes_text_if([textCmd],cmdList[1][1:-1],sdvigT+2)
+                rezT = Tg_mes_text_if([textCmd],[cmdList[1][1:-1]],sdvigT+2)
 
         for code_line in rezT.split('\n'):
             codeT = codeT + sdvigT*' ' + code_line + '\n'
 
+    codeT = codeT + Tg_mes_text_if(['help'],[str(helpText)],sdvigT+2)
     codeT = codeT + Tg_main()
     fT.write(codeT)
     fT.close()
@@ -41,8 +48,9 @@ def splitCode(keyVK,keyT,code):
     #f.close()
 
     #codeVK = codeVK + '\n' + mainVk()
-
+    msgVK.append('help')
+    respVK.append(helpText)
     fVK.write(vkBot(keyVK,msgVK,respVK))
     fVK.close()
-
-    print(open('vkBot.py').read())
+    print(helpText)
+    #print(open('vkBot.py').read())

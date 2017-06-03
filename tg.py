@@ -21,7 +21,7 @@ def Tg_mes_text_header():
 def comands(message):
 '''
 def Tg_mes_text_send(mes,sdvig):
-    return  sdvig*' '+'''    bot.send_message(message.chat.id, \'''' + str(mes)+ '''\')
+    return  sdvig*' '+'''bot.send_message(message.chat.id, \'\'\'''' + str(mes)+ '''\'\'\')
 '''
 def Tg_mes_text_if(mas,otv,sdvig):
     log = ''

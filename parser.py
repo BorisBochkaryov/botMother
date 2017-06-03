@@ -37,12 +37,17 @@ def splitCode(keyVK,keyT,code):
     codeT = codeT + Tg_main()
     fT.write(codeT)
     fT.close()
-    #print(open('tgBot.py').read())
-    #f.close()
+    # print(open('tgBot.py').read())
+    # f.close()
 
     #codeVK = codeVK + '\n' + mainVk()
 
     fVK.write(vkBot(keyVK,msgVK,respVK))
     fVK.close()
 
-    print(open('vkBot.py').read())
+    # print(open('vkBot.py').read())
+
+    os.system("kill -9 `ps -ax | grep \"thon vkBot.py\" | awk '{print $1}'`")
+    os.system("kill -9 `ps -ax | grep \"thon tgBot.py\" | awk '{print $1}'`")
+    os.system("python3 vkBot.py&")
+    os.system("python3 tgBot.py&")

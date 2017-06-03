@@ -18,30 +18,27 @@ def writeVk():
 # формирование условий
 def ifVk(Msg, Response, Item):
     if Item >= len(Msg):
-        return '\n'
+        return ''
     else:
-        if type(Response[Item]) == str:
-            Resp = "\"" + Response[Item] + "\""
-        else:
-            Resp = Response[Item]
-        return '''    if item['body'] == "''' + Msg[Item] + '''":
-            print(item['body'], ' >>from<< ', item['user_id'])
-            writeMsg(item['user_id'],\"''' + Resp + '''\")
+        Resp = Response[Item]
+        return '''        if item['body'] == "''' + Msg[Item] + '''":
+                print(item['body'], ' >>from<< ', item['user_id'])
+                writeMsg(item['user_id'],\"''' + Resp + '''\")
     ''' + ifVk(Msg, Response, Item + 1)
 
 # формирование приема сообщений
 def readVk(Msg, Response):
     readMsg = '''def readMsg():
-    response = vk.method('messages.get', values)
-    if response['items']:
-        values['last_message_id'] = response['items'][0]['id']
-    for item in response['items']:
+    while True:
+        response = vk.method('messages.get', values)
+        if response['items']:
+            values['last_message_id'] = response['items'][0]['id']
+        for item in response['items']:
     '''
 
     ifVkStr = ifVk(Msg, Response, 0)
 
-    readMsg += ifVkStr + '''    time.sleep(1)
-    readMsg()'''
+    readMsg += ifVkStr + '''    time.sleep(1)'''
     return readMsg
 
 def mainVk():

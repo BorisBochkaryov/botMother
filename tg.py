@@ -24,7 +24,7 @@ def Tg_mes_text_header():
 def comands(message):
 '''
 def Tg_mes_text_send(mes,sdvig):
-    return  sdvig*' '+'''bot.send_message(message.chat.id, \'\'\'''' + str(mes)+ '''\'\'\')
+    return  sdvig*' '+'''bot.send_message(message.chat.id, ''' + str(mes)+ ''')
 '''
 
 def Tg_mes_text_if(mas,otv,sdvig):
@@ -35,10 +35,10 @@ def Tg_mes_text_if(mas,otv,sdvig):
             if ':' in item2:
                 M = (item2.split(':'))[0]
                 A = (item2.split(':'))[1]
-                log += sdvig*' '+'''if message.text == "''' + item + '''":\n'''+ Tg_mes_text_send('''getattr(sys.modules["''' + M + '''"], "todo")("''' + A + '''")''',sdvig+2)
+                log += sdvig*' '+'''if message.text.lower() == "''' + item + '''":\n'''+ Tg_mes_text_send('''getattr(sys.modules["''' + M + '''"], "todo")("''' + A + '''")''',sdvig+2)
         else:
-            log += sdvig*' '+'''if message.text == ''' + '''\''''+ item + '''\'''' + ''':
-''' +Tg_mes_text_send(item2,sdvig+2) +'\n'
+            log += sdvig*' '+'''if message.text.lower() == ''' + '''\''''+ item + '''\'''' + ''':
+''' +Tg_mes_text_send("\'\'\'" + str(item2) + "\'\'\'",sdvig+2) +'\n'
     return log
 
 # if __name__ == '__main__':

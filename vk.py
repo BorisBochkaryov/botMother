@@ -40,7 +40,7 @@ def ifVk(Msg, Response, Item, Modules):
             else:
                 return '' + str(ifVk(Msg, Response, Item + 1, Modules))
         else:
-            return '''        if item['body'] == "''' + Msg[Item] + '''":
+            return '''        if item['body'].lower() == "''' + Msg[Item].lower() + '''":
                 writeMsg(item['user_id'],\'\'\'''' + Resp + '''\'\'\')
     ''' + str(ifVk(Msg, Response, Item + 1, Modules))
 

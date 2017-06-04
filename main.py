@@ -56,7 +56,14 @@ class OpenFile(QMainWindow):
 class Ui_Form(object):
     fileUser = ''
     def start(self,event):
-        parser.splitCode(self.lineEditVK.text(),self.lineEditT.text(),self.code.toPlainText(),str(self.checkBoxT.checkState()),str(self.checkBoxVK.checkState()))
+        self.rez.setText('')
+        F = parser.splitCode(self.lineEditVK.text(),self.lineEditT.text(),self.code.toPlainText(),str(self.checkBoxT.checkState()),str(self.checkBoxVK.checkState()))
+        if F[0] == 1:
+            self.rez.setText(self.rez.text() + 'Боты сформированы\n')
+        if F[1] == 1:
+            self.rez.setText(self.rez.text() + 'VkBot запущен')
+        if F[2] == 1:
+                self.rez.setText(self.rez.text() + ' TgBot запущен')
 
     def openFile(self, event):
         fileUser = OpenFile().showDialog()
@@ -84,6 +91,10 @@ class Ui_Form(object):
         self.help.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.help.setWordWrap(True)
         self.help.setObjectName(_fromUtf8("help"))
+        self.rez = QLabel(Form)
+        self.rez.setGeometry(QtCore.QRect(480, 550, 291, 31))
+        self.rez.setText(_fromUtf8(""))
+        self.rez.setObjectName(_fromUtf8("rez"))
         self.widget = QWidget(Form)
         self.widget.setGeometry(QtCore.QRect(10, 0, 761, 81))
         self.widget.setObjectName(_fromUtf8("widget"))
@@ -149,7 +160,7 @@ class Ui_Form(object):
 "  outline: none; /* убирать контур в Mozilla */\n"
 "border:0;}\n"
 "QPushButton:hover { background: rgb(232,95,76); } /* при наведении курсора мышки */\n"
-"QPushButton:active{background: rgb(152,15,0);  }/* при нажатии */"))
+"QPushButton:pressed{background: rgb(152,15,0);  }/* при нажатии */"))
         self.save.setObjectName(_fromUtf8("save"))
         self.horizontalLayout_4.addWidget(self.save)
         self.load = QPushButton(self.widget2)
@@ -161,7 +172,7 @@ class Ui_Form(object):
 "  outline: none; /* убирать контур в Mozilla */\n"
 "border:0;}\n"
 "QPushButton:hover { background: rgb(232,95,76); } /* при наведении курсора мышки */\n"
-"QPushButton:active{background: rgb(152,15,0);  }/* при нажатии */"))
+"QPushButton:pressed{background: rgb(152,15,0);  }/* при нажатии */"))
         self.load.setObjectName(_fromUtf8("load"))
         self.horizontalLayout_4.addWidget(self.load)
         self.pushButton = QPushButton(self.widget2)
@@ -173,7 +184,7 @@ class Ui_Form(object):
 "  outline: none; /* убирать контур в Mozilla */\n"
 "border:0;}\n"
 "QPushButton:hover { background: #FFCA28; } /* при наведении курсора мышки */\n"
-"QPushButton:active{background: #FFB300;  }/* при нажатии */"))
+"QPushButton:pressed{background: #FFB300;  }/* при нажатии */"))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.horizontalLayout_4.addWidget(self.pushButton)
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
@@ -183,6 +194,7 @@ class Ui_Form(object):
         self.help.raise_()
         self.load.raise_()
         self.save.raise_()
+        self.rez.raise_()
         self.label_2.setBuddy(self.lineEditVK)
 
         self.retranslateUi(Form)
@@ -207,14 +219,15 @@ class Ui_Form(object):
         self.pushButton.clicked.connect(self.start)
         self.load.clicked.connect(self.openFile)
         self.save.clicked.connect(self.saveFile)
-        self.code.setText(u'''text(Print, yes):="Hello cat"?"Котики"
-text(Print1):="Hello"?"Солнце"
-geo(Geo?,sdf?):=$geo(Сбербанк)?"Геоданные"
-text(банкомат):=$geo(Сбербанк)?"Банкоматы Сбербанка"
-text(погода):=$weather(Novosibirsk)?"Погода в Новосибирске"
-text(курс мне,курс):=$kurs(USD)?"курс USA"''')
+        self.code.setText(u'''text(Ты какой банк?,банк,название банка):="Сбербанк"?"Спросить о банке"
+text(ближайщий банкомат,банкомат):=$geo(Сбербанк)?"Получить список банокматов Сбербанка"
+text(какая сейчас погода,погода,погода новосибирска):=$weather(Novosibirsk)?"Погода в Новосибирске"
+text(какой курс доллара,курс доллара):=$kurs(USD)?"курс USA"''')
         self.lineEditT.setText("398702729:AAGEbX17tBg8KBRbykgoeYbbOIX2bYWXMTc")
         self.lineEditVK.setText("198ea0ffd479982bf90ff58d16f0d12d08fa470b1835310fe14e035a23bb3d000aed0caa6761006fdd67c")
+        fHelp = open("help",'r')
+        self.help.setText(self.help.text() + fHelp.read())
+        fHelp.close()
 
 if __name__ == "__main__":
     import sys

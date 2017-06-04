@@ -2,7 +2,7 @@
 import pyowm
 
 def todo(City = ''):
-    if City == '':
+    if City != '':
         owm = pyowm.OWM('6f6869b322d45dab227e1947d77423dd')
         observation = owm.weather_at_place(City + ',rus')
         w = (observation.get_weather()).get_temperature('celsius')
@@ -11,4 +11,4 @@ def todo(City = ''):
         return 'Какой город интересует?'
 
 if __name__ == "__main__":
-    print(todo('Novosibirsk'))
+    print(todo("Novosibirsk"))

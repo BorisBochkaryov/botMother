@@ -8,7 +8,7 @@ def todo(Arg = ''):
         dataQuery = datetime.now().strftime("%Y-%m-%d")
         rates = ExchangeRates(dataQuery)
         response = 'Курс ' + Arg + ' на ' + datetime.now().strftime("%d-%m-%Y") + ': '
-        response += str(float(rates[Arg].rate)) + ' руб'
+        response += str(float(rates[Arg.upper()].rate)) + ' руб'
         return response
     else:
         return "Какая валюта интересует?"

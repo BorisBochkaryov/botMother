@@ -34,7 +34,7 @@ def ifVk(Msg, Response, Item, Modules):
             M = (Resp.split(':'))[0]
             A = (Resp.split(':'))[1]
             if M in Modules:
-                return '''        if item['body'] == "''' + Msg[Item] + '''":
+                return '''        if item['body'].lower() == "''' + Msg[Item].lower() + '''":
                 writeMsg(item['user_id'], getattr(sys.modules["''' + M + '''"], "todo")("''' + A + '''"))
     ''' + str(ifVk(Msg, Response, Item + 1, Modules))
             else:

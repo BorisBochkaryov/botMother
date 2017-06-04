@@ -11,4 +11,4 @@ def todo(City = ''):
         return 'Какой город интересует?'
 
 if __name__ == "__main__":
-    print(todo('Novosibirsk'))
+    print(todo("Novosibirsk"))

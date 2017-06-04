@@ -7,7 +7,7 @@ def todo(City = ''):
         observation = owm.weather_at_place(City + ',rus')
         w = (observation.get_weather()).get_temperature('celsius')
         return 'Сейчас в ' + City + ': ' + str(w['temp']) + ' градусов'
-    else
+    else:
         return 'Какой город интересует?'
 
 if __name__ == "__main__":

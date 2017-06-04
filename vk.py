@@ -18,7 +18,11 @@ values = {'out': 0, 'count': 100, 'time_offset': 60}'''
 # формирование функции отправки сообщения
 def writeVk():
     return '''def writeMsg(user_id, msg):
-    vk.method('messages.send', {'user_id':user_id, 'message':msg})'''
+    if type(msg) == list:
+        for X in msg:
+            vk.method('messages.send', {'user_id':user_id, 'message': X[0], 'lat': X[1], 'long': X[2]})
+    else:
+        vk.method('messages.send', {'user_id':user_id, 'message':msg})'''
 
 # формирование условий
 def ifVk(Msg, Response, Item, Modules):
@@ -68,4 +72,7 @@ def vkBot(Token, Msg, Resp, Modules):
     return Bot
 
 if __name__ == "__main__":
-    print(vkBot("198ea0ffd479982bf90ff58d16f0d12d08fa470b1835310fe14e035a23bb3d000aed0caa6761006fdd67c", ["Hello", "Bye", "курс мне", "что с Европой", "погода"], ["Bye1", "Ok", "kurs:USD", "kurs:EUR", "weather:Novosibirsk"], ["kurs", "weather"]))
+    print(vkBot("198ea0ffd479982bf90ff58d16f0d12d08fa470b1835310fe14e035a23bb3d000aed0caa6761006fdd67c",
+        ["Hello", "Bye", "курс мне", "что с Европой", "погода", "банкомат"],
+        ["Bye1", "Ok", "kurs:USD", "kurs:EUR", "weather:Novosibirsk","geo:Сбербанк"],
+        ["kurs", "weather","geo"]))

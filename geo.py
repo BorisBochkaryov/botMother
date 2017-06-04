@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import googlemaps
 
-def todo(Place = '', lat = 54.862834, lng = 32.089386):
+def todo(Place = '', location = '52 84'):
     if Place != '':
         gmap = googlemaps.Client(key="AIzaSyAus4Ta89otv2ABV-KUxUrJPc6QO_Pv0m0")
-        Resp = gmap.places(Place, location=(lat, lng), radius=200, language='ru-RU')
+        [lat, lng] = location.split(' ')
+        Resp = gmap.places(Place, location=(float(lat), float(lng)), radius=100, language='ru-RU')
         if Resp['status'] == 'OK':
             Msg = []
             for Item in Resp['results']:

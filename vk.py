@@ -52,6 +52,9 @@ def readVk(Msg, Response, Modules):
         if response['items']:
             values['last_message_id'] = response['items'][0]['id']
         for item in response['items']:
+            print(item)
+            if 'geo' in item:
+                writeMsg(item['user_id'], getattr(sys.modules["geo"], "todo")("''' + "Сбербанк" + '''", item['geo']['coordinates']))
     '''
 
     ifVkStr = ifVk(Msg, Response, 0, Modules)

@@ -6,10 +6,10 @@
 
 # формирование заголовка бота
 def headVk(Token, Modules):
-    Import = 'import '
+    Import = ''
     for X in Modules:
         M = (X.split(':'))[0]
-        Import += M + ' '
+        Import += 'import ' + M + '\n'
     return Import + '''
 import time, vk_api, sys
 vk = vk_api.VkApi(token = \'''' + Token + '''\')
@@ -52,9 +52,10 @@ def readVk(Msg, Response, Modules):
 
     ifVkStr = ifVk(Msg, Response, 0, Modules)
 
-    readMsg += ifVkStr + '''time.sleep(1)'''
+    readMsg += ifVkStr + '''    time.sleep(1)'''
     return readMsg
 
+# формирование main для бота
 def mainVk():
     return '''if __name__ == \"__main__\":
     readMsg()'''
@@ -67,5 +68,4 @@ def vkBot(Token, Msg, Resp, Modules):
     return Bot
 
 if __name__ == "__main__":
-    # readMsg()
-    print(vkBot("198ea0ffd479982bf90ff58d16f0d12d08fa470b1835310fe14e035a23bb3d000aed0caa6761006fdd67c", ["Hello", "Bye", "курс мне"], ["Bye1", "Ok", "kurs:usa"], ["kurs"]))
+    print(vkBot("198ea0ffd479982bf90ff58d16f0d12d08fa470b1835310fe14e035a23bb3d000aed0caa6761006fdd67c", ["Hello", "Bye", "курс мне", "что с Европой", "погода"], ["Bye1", "Ok", "kurs:USD", "kurs:EUR", "weather:Novosibirsk"], ["kurs", "weather"]))
